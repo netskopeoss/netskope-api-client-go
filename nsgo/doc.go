@@ -30,4 +30,4 @@
 //		fmt.Println(pubs)
 //
 //	}
-package netskope
+package nsgo

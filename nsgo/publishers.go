@@ -1,4 +1,4 @@
-package netskope
+package nsgo
 
 import (
 	"bytes"

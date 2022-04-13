@@ -16,12 +16,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/netskopeoss/netskope-api-client-go/netskope"
+	"github.com/netskopeoss/netskope-api-client-go/nsgo"
 )
 
 func main() {
 	//Init a client instance
-	nsclient := netskope.NewClient(os.Getenv("NS_BaseURL"), os.Getenv("NS_ApiToken"))
+	nsclient := nsgo.NewClient(os.Getenv("NS_BaseURL"), os.Getenv("NS_ApiToken"))
 
 	//Get Publishers
 	pubs, err := nsclient.GetPublishers()
