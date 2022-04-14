@@ -17,6 +17,12 @@ type Client struct {
 	HttpClient *http.Client
 }
 
+//RequestOptions defines a struct to pass options to functions.
+type RequestOptions struct {
+	Name string `json:"name,omitempty"`
+	Id   string `json:"id,omitempty"`
+}
+
 //The errorResponse struct defines an error response sent by the API.
 //
 type errorResponse struct {

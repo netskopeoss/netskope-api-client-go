@@ -1,6 +1,6 @@
 # NETSKOPE-API-CLIENT-GO
 
-NETSKOPE-API-CLIENT-GO is an API client developed in GO for use with the Netskope v2 APIs.
+The NSGO Package is an API client developed in GO for use with the Netskope v2 APIs.
 The client was developed for and is used by the [Netskope Terraform Provider](https://github.com/netskopeoss/terraform-provider-netskope).
 
 ## Requirements
