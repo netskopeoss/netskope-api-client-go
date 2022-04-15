@@ -16,7 +16,7 @@ type IpsecPops []struct {
 	ID         int          `json:"id"`
 	Location   string       `json:"location"`
 	Name       string       `json:"name"`
-	Options    IpsecOptions `json:"options"`
+	Options    IpsecOptions `json:"-"`
 	Probeip    string       `json:"probeip"`
 	Region     string       `json:"region"`
 }
@@ -83,7 +83,6 @@ type NewIpsecTunnel struct {
 	Bandwidth     int      `json:"bandwidth,omitempty"` //[50, 100, 150, 250]
 }
 
-//GetIpsecPops defines a function to get a list of IPSec Pops from a Netskope tennant.
 func (c *Client) GetIpsecPops() (*IpsecPops, error) {
 	//Setup the HTTP Request
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/steering/ipsec/pops", c.BaseURL), nil)
@@ -137,8 +136,6 @@ func (c *Client) GetIpsecPopId(options RequestOptions) (*IpsecPops, error) {
 		return &dataStruct, nil
 
 		//return res.Result, nil
-		//} else if res.Status == "error" {
-		//	return nil, errors.New(res.Message)
 	} else {
 		return nil, errors.New("Unkown Status: " + strconv.Itoa(res.Status))
 	}
