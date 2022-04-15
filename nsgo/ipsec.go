@@ -56,12 +56,12 @@ type IpsecTunnels []struct {
 		Gateway string `json:"gateway"`
 		Probeip string `json:"probeip"`
 		Primary bool   `json:"primary"`
-	} `json:"pops"`
+	} `json:"-"`
 	Status struct {
 		Status     string `json:"status"`
 		Since      string `json:"since"`
 		Throughput string `json:"throughput"`
-	} `json:"status"`
+	} `json:"-"`
 	Template      string `json:"template"`
 	Sourcetype    string `json:"sourcetype"`
 	Notes         string `json:"notes"`
