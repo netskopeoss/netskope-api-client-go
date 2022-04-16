@@ -81,6 +81,7 @@ type NewIpsecTunnel struct {
 	Sourcetype    string        `json:"sourcetype,omitempty"` //['User', 'Server', 'IoT', 'Guest wifi', 'Mixed']
 	Pops          []interface{} `json:"pops,omitempty"`
 	Bandwidth     int           `json:"bandwidth,omitempty"` //[50, 100, 150, 250]
+	Enable        bool          `json:"enable,omitempty"`
 }
 
 func (c *Client) GetIpsecPops() (*IpsecPops, error) {
