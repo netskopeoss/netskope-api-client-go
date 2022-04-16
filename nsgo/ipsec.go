@@ -72,15 +72,15 @@ type IpsecTunnels []struct {
 
 //NewIpsecTunnel defines a struct for creating an IPSec tunnel in Netskope.
 type NewIpsecTunnel struct {
-	Encryption    string   `json:"encryption,omitempty"`
-	Site          string   `json:"site,omitempty"`
-	Srcidentity   string   `json:"srcidentity,omitempty"`
-	Srcipidentity string   `json:"srcipidentity,omitempty"`
-	Psk           string   `json:"psk,omitempty"`
-	Notes         string   `json:"notes,omitempty"`
-	Sourcetype    string   `json:"sourcetype,omitempty"` //['User', 'Server', 'IoT', 'Guest wifi', 'Mixed']
-	Pops          []string `json:"pops,omitempty"`
-	Bandwidth     int      `json:"bandwidth,omitempty"` //[50, 100, 150, 250]
+	Encryption    string        `json:"encryption,omitempty"`
+	Site          string        `json:"site,omitempty"`
+	Srcidentity   string        `json:"srcidentity,omitempty"`
+	Srcipidentity string        `json:"srcipidentity,omitempty"`
+	Psk           string        `json:"psk,omitempty"`
+	Notes         string        `json:"notes,omitempty"`
+	Sourcetype    string        `json:"sourcetype,omitempty"` //['User', 'Server', 'IoT', 'Guest wifi', 'Mixed']
+	Pops          []interface{} `json:"pops,omitempty"`
+	Bandwidth     int           `json:"bandwidth,omitempty"` //[50, 100, 150, 250]
 }
 
 func (c *Client) GetIpsecPops() (*IpsecPops, error) {
