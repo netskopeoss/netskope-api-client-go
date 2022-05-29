@@ -70,6 +70,29 @@ type IpsecTunnels []struct {
 	Srcipidentity string `json:"srcipidentity"`
 }
 
+type IpsecTunnel struct {
+	ID      int    `json:"id"`
+	Site    string `json:"site"`
+	Enabled bool   `json:"enabled"`
+	Pops    []struct {
+		Name    string `json:"name"`
+		Gateway string `json:"gateway"`
+		Probeip string `json:"probeip"`
+		Primary bool   `json:"primary"`
+	} `json:"pops"`
+	Status struct {
+		Status     string `json:"status"`
+		Since      string `json:"since"`
+		Throughput string `json:"throughput"`
+	} `json:"status"`
+	Template      string `json:"template"`
+	Sourcetype    string `json:"sourcetype"`
+	Notes         string `json:"notes"`
+	Encryption    string `json:"encryption"`
+	Srcidentity   string `json:"srcidentity"`
+	Srcipidentity string `json:"srcipidentity"`
+}
+
 //NewIpsecTunnel defines a struct for creating an IPSec tunnel in Netskope.
 type NewIpsecTunnel struct {
 	Encryption    string        `json:"encryption,omitempty"`

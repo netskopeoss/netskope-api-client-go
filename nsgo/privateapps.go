@@ -83,6 +83,54 @@ func (c *Client) GetPrivateApps() (interface{}, error) {
 	}
 }
 
+func (c *Client) GetPrivateAppsWithFilters(filters NpaFilters) (interface{}, error) {
+	//Set Query String Based on Filters
+	query := "query="
+
+	if filters.FilterLogic == "" {
+		filters.FilterLogic = "and"
+	}
+
+	for i, filter := range filters.Filters {
+		if filter.Operator == "" {
+			filter.Operator = "eq"
+		}
+		if i == 0 {
+			query = query + fmt.Sprintf("%s+%s+%s", filter.Name, filter.Operator, filter.Value)
+		} else {
+			query = query + fmt.Sprintf("+%s+%s+%s+%s", filters.FilterLogic, filter.Name, filter.Operator, filter.Value)
+		}
+	}
+	//Setup the HTTP Request
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/steering/apps/private", c.BaseURL), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	//Set Query String
+	req.URL.RawQuery = query
+
+	//Debug
+	//reqDump, err := httputil.DumpRequestOut(req, true)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//fmt.Println(string(reqDump))
+
+	res := successResponse{}
+	if err := c.sendRequest(req, &res); err != nil {
+		return nil, err
+	}
+
+	if res.Status == "success" {
+		return res.Data, nil
+	} else if res.Status == "error" {
+		return nil, errors.New(res.Message)
+	} else {
+		return nil, errors.New("Unkown Status: " + res.Status)
+	}
+}
+
 func (c *Client) GetPrivateAppId(options PrivateAppOptions) (interface{}, error) {
 	//Setup the HTTP Request
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/steering/apps/private/%s", c.BaseURL, options.Id), nil)

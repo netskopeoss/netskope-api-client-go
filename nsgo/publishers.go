@@ -116,6 +116,67 @@ func (c *Client) GetPublishers() (interface{}, error) {
 	}
 }
 
+//GetPublishersWithFilters function is used to build API request which is sent to sendRequest().
+//It is called using the client struct and the NpaFilters Struct. It returns an interface with a list of Filtered Publishers.
+//The interface can be marshaled into the PublishersList struct.
+//
+//BUG(terraform-provider-netskope): Need tp modify the Assessment struct so that this request can return a PublishersList struct instead of an interface.
+func (c *Client) GetPublishersWithFilters(filters NpaFilters) (interface{}, error) {
+	//Set Query String Based on Filters
+	query := "query="
+
+	if filters.FilterLogic == "" {
+		filters.FilterLogic = "and"
+	}
+
+	for i, filter := range filters.Filters {
+		if filter.Operator == "" {
+			filter.Operator = "eq"
+		}
+		if i == 0 {
+			query = query + fmt.Sprintf("%s+%s+%s", filter.Name, filter.Operator, filter.Value)
+		} else {
+			query = query + fmt.Sprintf("+%s+%s+%s+%s", filters.FilterLogic, filter.Name, filter.Operator, filter.Value)
+		}
+	}
+	//Setup the HTTP Request
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/infrastructure/publishers", c.BaseURL), nil)
+	if err != nil {
+		return nil, err
+	}
+	//Set URL Query String
+	req.URL.RawQuery = query
+
+	//Debug
+	//reqDump, err := httputil.DumpRequestOut(req, true)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//fmt.Println(string(reqDump))
+
+	res := successResponse{}
+	if err := c.sendRequest(req, &res); err != nil {
+		return nil, err
+	}
+
+	if res.Status == "success" {
+		/*
+			jsonData, err := json.Marshal(res.Data)
+			if err != nil {
+				return nil, err
+			}
+			dataStruct := PublishersList{}
+			json.Unmarshal(jsonData, &dataStruct)
+			return &dataStruct, nil
+		*/
+		return res.Data, nil
+	} else if res.Status == "error" {
+		return nil, errors.New(res.Message)
+	} else {
+		return nil, errors.New("Unkown Status: " + res.Status)
+	}
+}
+
 //GetPublisherId function is used to build API request which is sent to sendRequest().
 //It is called using the client struct, takes and returns an interface.
 func (c *Client) GetPublisherId(options PublisherOptions) (*Publisher, error) {
