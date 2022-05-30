@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -83,32 +84,15 @@ func (c *Client) GetPrivateApps() (interface{}, error) {
 	}
 }
 
-func (c *Client) GetPrivateAppsWithFilters(filters NpaFilters) (interface{}, error) {
-	//Set Query String Based on Filters
-	query := "query="
+func (c *Client) GetPrivateAppsWithFilters(filter string) (interface{}, error) {
+	//Escape Filter
+	filter = url.QueryEscape(filter)
 
-	if filters.FilterLogic == "" {
-		filters.FilterLogic = "and"
-	}
-
-	for i, filter := range filters.Filters {
-		if filter.Operator == "" {
-			filter.Operator = "eq"
-		}
-		if i == 0 {
-			query = query + fmt.Sprintf("%s+%s+%s", filter.Name, filter.Operator, filter.Value)
-		} else {
-			query = query + fmt.Sprintf("+%s+%s+%s+%s", filters.FilterLogic, filter.Name, filter.Operator, filter.Value)
-		}
-	}
 	//Setup the HTTP Request
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/steering/apps/private", c.BaseURL), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/steering/apps/private?query=%s", c.BaseURL, filter), nil)
 	if err != nil {
 		return nil, err
 	}
-
-	//Set Query String
-	req.URL.RawQuery = query
 
 	//Debug
 	//reqDump, err := httputil.DumpRequestOut(req, true)

@@ -23,18 +23,6 @@ type RequestOptions struct {
 	Id   string `json:"id,omitempty"`
 }
 
-//Filters for Publishers and Private Apps
-type NpaFilters struct {
-	FilterLogic string      `json:"filter_logic:omitempty"` //and , or
-	Filters     []NpaFilter `json:"filters"`
-}
-
-type NpaFilter struct {
-	Name     string `json:"name"`
-	Value    string `json:"value"`
-	Operator string `json:"operator:omitempty"` //eq, ge, gt, le, lt, ne, pr, sw
-}
-
 //The errorResponse struct defines an error response sent by the API.
 //
 type errorResponse struct {

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 )
 
 /*
@@ -121,31 +122,14 @@ func (c *Client) GetPublishers() (interface{}, error) {
 //The interface can be marshaled into the PublishersList struct.
 //
 //BUG(terraform-provider-netskope): Need tp modify the Assessment struct so that this request can return a PublishersList struct instead of an interface.
-func (c *Client) GetPublishersWithFilters(filters NpaFilters) (interface{}, error) {
+func (c *Client) GetPublishersWithFilters(filter string) (interface{}, error) {
 	//Set Query String Based on Filters
-	query := "query="
-
-	if filters.FilterLogic == "" {
-		filters.FilterLogic = "and"
-	}
-
-	for i, filter := range filters.Filters {
-		if filter.Operator == "" {
-			filter.Operator = "eq"
-		}
-		if i == 0 {
-			query = query + fmt.Sprintf("%s+%s+%s", filter.Name, filter.Operator, filter.Value)
-		} else {
-			query = query + fmt.Sprintf("+%s+%s+%s+%s", filters.FilterLogic, filter.Name, filter.Operator, filter.Value)
-		}
-	}
+	filter = url.QueryEscape(filter)
 	//Setup the HTTP Request
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/infrastructure/publishers", c.BaseURL), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/infrastructure/publishers?query=%s", c.BaseURL, filter), nil)
 	if err != nil {
 		return nil, err
 	}
-	//Set URL Query String
-	req.URL.RawQuery = query
 
 	//Debug
 	//reqDump, err := httputil.DumpRequestOut(req, true)
