@@ -84,7 +84,7 @@ func (c *Client) GetPrivateApps() (interface{}, error) {
 	}
 }
 
-func (c *Client) GetPrivateAppsWithFilters(filter string) (interface{}, error) {
+func (c *Client) GetPrivateAppsWithFilter(filter string) (interface{}, error) {
 	//Escape Filter
 	filter = url.QueryEscape(filter)
 

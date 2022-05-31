@@ -122,8 +122,8 @@ func (c *Client) GetPublishers() (interface{}, error) {
 //The interface can be marshaled into the PublishersList struct.
 //
 //BUG(terraform-provider-netskope): Need tp modify the Assessment struct so that this request can return a PublishersList struct instead of an interface.
-func (c *Client) GetPublishersWithFilters(filter string) (interface{}, error) {
-	//Set Query String Based on Filters
+func (c *Client) GetPublishersWithFilter(filter string) (interface{}, error) {
+	//Escape Filter
 	filter = url.QueryEscape(filter)
 	//Setup the HTTP Request
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/infrastructure/publishers?query=%s", c.BaseURL, filter), nil)
