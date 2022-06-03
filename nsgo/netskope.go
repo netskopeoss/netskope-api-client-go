@@ -62,6 +62,7 @@ func NewClient(BaseURL, apiToken string) *Client {
 //The sendRequest function is used to package an API request and send it to the defined Netskope tenant(BaseURL).
 //It is called using the client struct, takes an http.Request as input and returns an interface.
 func (c *Client) sendRequest(req *http.Request, v interface{}) error {
+	req.Header.Set("user-Agent", "nsgo-api-client/0.2.2")
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Netskope-Api-Token", c.apiToken)
 
