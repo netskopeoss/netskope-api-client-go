@@ -48,6 +48,18 @@ type ipsecResponse struct {
 	Message string      `json:"message,omitempty"`
 }
 
+type PopFilters struct {
+	Name    string `url:"name,omitempty" validate:"excluded_with=Region Country Lat Long Ip Fields"`
+	Region  string `url:"region,omitempty" validate:"excluded_with=Name Country Lat Long Ip Fields"`
+	Country string `url:"country,omitempty" validate:"excluded_with=Name Region Lat Long Ip Fields"`
+	Lat     string `url:"lat,omitempty" validate:"required_with=Long,excluded_with=Name Region Country Ip Fields"`
+	Long    string `url:"long,omitempty" validate:"required_with=Lat,excluded_with=Name Region Country Ip Fields"`
+	Ip      string `url:"ip,omitempty" validate:"excluded_with=Name Region Country Lat Long Fields"`
+	Fields  string `url:"fields,omitempty" validate:"excluded_with=Name Region Country Lat Long Ip"`
+	Offset  int    `url:"offset,omitempty"`
+	Limit   int    `url:"limit,omitempty"`
+}
+
 //The NewClient function accepts the BaseURL and apiToken and returns a client struct.
 func NewClient(BaseURL, apiToken string) *Client {
 	return &Client{
@@ -62,7 +74,7 @@ func NewClient(BaseURL, apiToken string) *Client {
 //The sendRequest function is used to package an API request and send it to the defined Netskope tenant(BaseURL).
 //It is called using the client struct, takes an http.Request as input and returns an interface.
 func (c *Client) sendRequest(req *http.Request, v interface{}) error {
-	req.Header.Set("user-Agent", "nsgo-api-client/0.2.2")
+	req.Header.Set("user-Agent", "nsgo-api-client/0.3.0")
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Netskope-Api-Token", c.apiToken)
 

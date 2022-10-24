@@ -7,18 +7,20 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/google/go-querystring/query"
 )
 
 //IpsecPops defines a struct used for list of Netskope IPSec PoPs returned from the tenant.
 type IpsecPops []struct {
-	Closestpop bool         `json:"closestpop"`
-	Gateway    string       `json:"gateway"`
-	ID         int          `json:"id"`
-	Location   string       `json:"location"`
-	Name       string       `json:"name"`
-	Options    IpsecOptions `json:"-"`
-	Probeip    string       `json:"probeip"`
-	Region     string       `json:"region"`
+	Gateway  string       `json:"gateway"`
+	ID       string       `json:"id"`
+	Location string       `json:"location"`
+	Name     string       `json:"name"`
+	Options  IpsecOptions `json:"options"`
+	Probeip  string       `json:"probeip"`
+	Region   string       `json:"region"`
 }
 
 //IpsecOptions Defines a struct to use return IPSec tunnel options.
@@ -136,6 +138,51 @@ func (c *Client) GetIpsecPops() (*IpsecPops, error) {
 	}
 }
 
+func (c *Client) GetIpsecPopsWithFilters(filters PopFilters) (*IpsecPops, error) {
+	//Validate the Filters Struct
+	//https://go.dev/play/p/rk40YsfJkaI
+	var validate *validator.Validate
+	validate = validator.New()
+
+	err := validate.Struct(filters)
+	if err != nil {
+		return nil, err
+	}
+
+	//Set Query String
+	filter_query, err := query.Values(filters)
+	if err != nil {
+		return nil, err
+	}
+
+	//Setup the HTTP Request
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/steering/ipsec/pops?%s", c.BaseURL, filter_query.Encode()), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := ipsecResponse{}
+	if err := c.sendRequest(req, &res); err != nil {
+		return nil, err
+	}
+
+	if res.Status == 200 {
+		jsonData, err := json.Marshal(res.Result)
+		if err != nil {
+			return nil, err
+		}
+		dataStruct := IpsecPops{}
+		json.Unmarshal(jsonData, &dataStruct)
+		return &dataStruct, nil
+
+		//return res.Result, nil
+		//} else if res.Status == "error" {
+		//	return nil, errors.New(res.Message)
+	} else {
+		return nil, errors.New("Unkown Status: " + strconv.Itoa(res.Status))
+	}
+}
+
 //GetIpsecPopId function is used to GET an individual Pop by ID.
 func (c *Client) GetIpsecPopId(options RequestOptions) (*IpsecPops, error) {
 	//Setup the HTTP Request
@@ -165,7 +212,7 @@ func (c *Client) GetIpsecPopId(options RequestOptions) (*IpsecPops, error) {
 	}
 }
 
-//GetIpsecTunnels defines a function to get a list of IPSec Tunnels from a Netskope tennant.
+//GetIpsecTunnels defines a function to get a list of IPSec Tunnels from a Netskope tenant.
 func (c *Client) GetIpsecTunnels() (*IpsecTunnels, error) {
 	//Setup the HTTP Request
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/steering/ipsec/tunnels", c.BaseURL), nil)

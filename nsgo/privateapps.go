@@ -48,6 +48,7 @@ type PrivateApp struct {
 	Host                 string              `json:"host"`
 	Protocols            []Protocol          `json:"protocols"`
 	Publishers           []PublisherIdentity `json:"publishers,omitempty"`
+	Tags                 []PrivateAppTags    `json:"tags,omitempty"`
 	UsePublisherDNS      bool                `json:"use_publisher_dns,omitempty"`
 	ClientlessAccess     bool                `json:"clientless_access,omitempty"`
 	TrustSelfSignedCerts bool                `json:"trust_self_signed_certs,omitempty"`
@@ -61,6 +62,10 @@ type Protocol struct {
 type PublisherIdentity struct {
 	PublisherID   string `json:"publisher_id"`
 	PublisherName string `json:"publisher_name"`
+}
+
+type PrivateAppTags struct {
+	TagName string `json:"tag_name"`
 }
 
 func (c *Client) GetPrivateApps() (interface{}, error) {
