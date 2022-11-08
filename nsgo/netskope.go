@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 //The client struct defines a new HttpClient with the required connection details.
@@ -60,14 +62,35 @@ type PopFilters struct {
 	Limit   int    `url:"limit,omitempty"`
 }
 
+type RetryConfig struct {
+	BaseURL  string
+	ApiToken string
+	Logger   interface{}
+}
+
 //The NewClient function accepts the BaseURL and apiToken and returns a client struct.
 func NewClient(BaseURL, apiToken string) *Client {
+
 	return &Client{
 		BaseURL:  BaseURL,
 		apiToken: apiToken,
 		HttpClient: &http.Client{
 			Timeout: time.Minute,
 		},
+	}
+}
+
+//The NewRetryClient function accepts the BaseURL and apiToken and returns a retryableclient.
+//Use this in place of NewClient to enable automatic retry logic for rate limiting etc.
+func NewRetryClient(config RetryConfig) *Client {
+
+	retryClient := retryablehttp.NewClient()
+	retryClient.Logger = config.Logger
+
+	return &Client{
+		BaseURL:    config.BaseURL,
+		apiToken:   config.ApiToken,
+		HttpClient: retryClient.StandardClient(),
 	}
 }
 
