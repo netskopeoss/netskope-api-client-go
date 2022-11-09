@@ -101,14 +101,14 @@ func NewRetryClient(config Config) *Client {
 
 	if config.RetryConfig != nil {
 		retryClient.RetryMax = config.RetryConfig.RetryMax
-		retryClient.RetryWaitMin = config.RetryConfig.RetryWaitMin
-		retryClient.RetryWaitMax = config.RetryConfig.RetryWaitMax
+		retryClient.RetryWaitMin = time.Second * time.Duration(config.RetryConfig.RetryWaitMin)
+		retryClient.RetryWaitMax = time.Second * time.Duration(config.RetryConfig.RetryWaitMax)
 		retryClient.Logger = config.RetryConfig.Logger
 
 	} else {
 		retryClient.RetryMax = defaultRetry.RetryMax
-		retryClient.RetryWaitMin = defaultRetry.RetryWaitMin
-		retryClient.RetryWaitMax = defaultRetry.RetryWaitMax
+		retryClient.RetryWaitMin = time.Second * time.Duration(defaultRetry.RetryWaitMin)
+		retryClient.RetryWaitMax = time.Second * time.Duration(defaultRetry.RetryWaitMax)
 		retryClient.Logger = defaultRetry.Logger
 	}
 
