@@ -62,10 +62,23 @@ type PopFilters struct {
 	Limit   int    `url:"limit,omitempty"`
 }
 
+var defaultRetry = &RetryConfig{
+	RetryMax:     100,
+	RetryWaitMin: 5,
+	RetryWaitMax: 20,
+}
+
 type RetryConfig struct {
-	BaseURL  string
-	ApiToken string
-	Logger   interface{}
+	RetryMax     int
+	RetryWaitMin int
+	RetryWaitMax int
+	Logger       interface{}
+}
+
+type Config struct {
+	BaseURL     string
+	ApiToken    string
+	RetryConfig *RetryConfig
 }
 
 //The NewClient function accepts the BaseURL and apiToken and returns a client struct.
@@ -82,10 +95,22 @@ func NewClient(BaseURL, apiToken string) *Client {
 
 //The NewRetryClient function accepts the BaseURL and apiToken and returns a retryableclient.
 //Use this in place of NewClient to enable automatic retry logic for rate limiting etc.
-func NewRetryClient(config RetryConfig) *Client {
+func NewRetryClient(config Config) *Client {
 
 	retryClient := retryablehttp.NewClient()
-	retryClient.Logger = config.Logger
+
+	if config.RetryConfig != nil {
+		retryClient.RetryMax = config.RetryConfig.RetryMax
+		retryClient.RetryWaitMin = config.RetryConfig.RetryWaitMin
+		retryClient.RetryWaitMax = config.RetryConfig.RetryWaitMax
+		retryClient.Logger = config.RetryConfig.Logger
+
+	} else {
+		retryClient.RetryMax = defaultRetry.RetryMax
+		retryClient.RetryWaitMin = defaultRetry.RetryWaitMin
+		retryClient.RetryWaitMax = defaultRetry.RetryWaitMax
+		retryClient.Logger = defaultRetry.Logger
+	}
 
 	return &Client{
 		BaseURL:    config.BaseURL,
