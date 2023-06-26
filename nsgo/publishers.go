@@ -15,30 +15,41 @@ type PublishersList struct {
 }
 */
 
-//PublisherList struct is used to define a list of Netskope publishers returned from the GET method.
+// PublisherList struct is used to define a list of Netskope publishers returned from the GET method.
 type PublishersList struct {
 	Publishers []struct {
 		Assessment struct {
-			EeeSupport string `json:"eee_support"`
+			EeeSupport bool   `json:"eee_support"`
 			HddFree    string `json:"hdd_free"`
 			HddTotal   string `json:"hdd_total"`
 			IPAddress  string `json:"ip_address"`
+			Latency    int    `json:"latency"`
 			Version    string `json:"version"`
 		} `json:"assessment"`
-		//Assessment                 interface{} `json:"assessment"`
-		CommonName                 string      `json:"common_name"`
-		PublisherID                int         `json:"publisher_id"`
-		PublisherName              string      `json:"publisher_name"`
-		PublisherUpgradeProfilesID interface{} `json:"publisher_upgrade_profiles_id"`
-		Registered                 bool        `json:"registered"`
-		Status                     string      `json:"status"`
-		StitcherID                 interface{} `json:"stitcher_id"`
-		UpgradeFailedReason        interface{} `json:"upgrade_failed_reason"`
-		UpgradeRequest             bool        `json:"upgrade_request"`
+		CommonName                         string `json:"common_name"`
+		Lbrokerconnect                     bool   `json:"lbrokerconnect"`
+		PublisherID                        int    `json:"publisher_id"`
+		PublisherName                      string `json:"publisher_name"`
+		PublisherUpgradeProfilesExternalID int    `json:"publisher_upgrade_profiles_external_id"`
+		Registered                         bool   `json:"registered"`
+		Status                             string `json:"status"`
+		StitcherID                         int    `json:"stitcher_id"`
+		Tags                               []any  `json:"tags"`
+		UpgradeFailedReason                struct {
+			Detail    string `json:"detail"`
+			ErrorCode int    `json:"error_code"`
+			Timestamp int    `json:"timestamp"`
+			Version   string `json:"version"`
+		} `json:"upgrade_failed_reason"`
+		UpgradeRequest bool `json:"upgrade_request"`
+		UpgradeStatus  struct {
+			StatusFailureCode int    `json:"status_failure_code"`
+			Upstat            string `json:"upstat"`
+		} `json:"upgrade_status,omitempty"`
 	} `json:"publishers"`
 }
 
-//Publiser is a struct used to define and individual Netskope Publisher.
+// Publiser is a struct used to define and individual Netskope Publisher.
 type Publisher struct {
 	Assessment Assessment  `json:"assessment"`
 	CommonName string      `json:"common_name"`
@@ -49,8 +60,8 @@ type Publisher struct {
 	StitcherID interface{} `json:"stitcher_id"`
 }
 
-//Assessment is a struct used inside of the Publisher struct.
-//BUG(terraform-provider-netskope): Need tp modify EeeSupport so it isn't returned in JSON.
+// Assessment is a struct used inside of the Publisher struct.
+// BUG(terraform-provider-netskope): Need tp modify EeeSupport so it isn't returned in JSON.
 type Assessment struct {
 	EeeSupport bool   `json:"eee_support"`
 	HddFree    string `json:"hdd_free"`
@@ -59,34 +70,34 @@ type Assessment struct {
 	Version    string `json:"version"`
 }
 
-//PublisherOptions struct defines details used in GET by ID, Create, Update and Delete methods.
+// PublisherOptions struct defines details used in GET by ID, Create, Update and Delete methods.
 //
-//- Name: a string that represents the publisher name
+// - Name: a string that represents the publisher name
 //
-//- Id: a string that represents the publisher Id
+// - Id: a string that represents the publisher Id
 //
-//		newpublisher := nsgo.PublisherOptions{
-//			Name: "MyNewPublisher",
-//		}
+//	newpublisher := nsgo.PublisherOptions{
+//		Name: "MyNewPublisher",
+//	}
 //
-//		updatepublisher := nsgo.PublisherOptions{
-//			Id: "987",
-//		}
+//	updatepublisher := nsgo.PublisherOptions{
+//		Id: "987",
+//	}
 type PublisherOptions struct {
 	Name string `json:"name,omitempty"`
 	Id   string `json:"id,omitempty"`
 }
 
-//PublisherToken struct is used to define the token response data.
+// PublisherToken struct is used to define the token response data.
 type PublisherToken struct {
 	Token string `json:"token"`
 }
 
-//GetPublishers function is used to build API request which is sent to sendRequest().
-//It is called using the client struct, and returns an interface with a list of Publishers.
-//The interface can be marshaled into the PublishersList struct.
+// GetPublishers function is used to build API request which is sent to sendRequest().
+// It is called using the client struct, and returns an interface with a list of Publishers.
+// The interface can be marshaled into the PublishersList struct.
 //
-//BUG(terraform-provider-netskope): Need tp modify the Assessment struct so that this request can return a PublishersList struct instead of an interface.
+// BUG(terraform-provider-netskope): Need tp modify the Assessment struct so that this request can return a PublishersList struct instead of an interface.
 func (c *Client) GetPublishers() (interface{}, error) {
 	//Setup the HTTP Request
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/infrastructure/publishers", c.BaseURL), nil)
@@ -117,11 +128,11 @@ func (c *Client) GetPublishers() (interface{}, error) {
 	}
 }
 
-//GetPublishersWithFilters function is used to build API request which is sent to sendRequest().
-//It is called using the client struct and the NpaFilters Struct. It returns an interface with a list of Filtered Publishers.
-//The interface can be marshaled into the PublishersList struct.
+// GetPublishersWithFilters function is used to build API request which is sent to sendRequest().
+// It is called using the client struct and the NpaFilters Struct. It returns an interface with a list of Filtered Publishers.
+// The interface can be marshaled into the PublishersList struct.
 //
-//BUG(terraform-provider-netskope): Need tp modify the Assessment struct so that this request can return a PublishersList struct instead of an interface.
+// BUG(terraform-provider-netskope): Need tp modify the Assessment struct so that this request can return a PublishersList struct instead of an interface.
 func (c *Client) GetPublishersWithFilter(filter string) (interface{}, error) {
 	//Escape Filter
 	filter = url.QueryEscape(filter)
@@ -161,8 +172,8 @@ func (c *Client) GetPublishersWithFilter(filter string) (interface{}, error) {
 	}
 }
 
-//GetPublisherId function is used to build API request which is sent to sendRequest().
-//It is called using the client struct, takes and returns an interface.
+// GetPublisherId function is used to build API request which is sent to sendRequest().
+// It is called using the client struct, takes and returns an interface.
 func (c *Client) GetPublisherId(options PublisherOptions) (*Publisher, error) {
 	//Setup the HTTP Request
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v2/infrastructure/publishers/%s", c.BaseURL, options.Id), nil)
