@@ -26,15 +26,15 @@ type PublishersList struct {
 			Latency    int    `json:"latency"`
 			Version    string `json:"version"`
 		} `json:"assessment"`
-		CommonName                         string `json:"common_name"`
-		Lbrokerconnect                     bool   `json:"lbrokerconnect"`
-		PublisherID                        int    `json:"publisher_id"`
-		PublisherName                      string `json:"publisher_name"`
-		PublisherUpgradeProfilesExternalID int    `json:"publisher_upgrade_profiles_external_id"`
-		Registered                         bool   `json:"registered"`
-		Status                             string `json:"status"`
-		StitcherID                         int    `json:"stitcher_id"`
-		Tags                               []any  `json:"tags"`
+		CommonName                         string   `json:"common_name"`
+		Lbrokerconnect                     bool     `json:"lbrokerconnect"`
+		PublisherID                        int      `json:"publisher_id"`
+		PublisherName                      string   `json:"publisher_name"`
+		PublisherUpgradeProfilesExternalID int      `json:"publisher_upgrade_profiles_external_id"`
+		Registered                         bool     `json:"registered"`
+		Status                             string   `json:"status"`
+		StitcherID                         int      `json:"stitcher_id"`
+		Tags                               []string `json:"tags"`
 		UpgradeFailedReason                struct {
 			Detail    string `json:"detail"`
 			ErrorCode int    `json:"error_code"`
@@ -51,13 +51,13 @@ type PublishersList struct {
 
 // Publiser is a struct used to define and individual Netskope Publisher.
 type Publisher struct {
-	Assessment Assessment  `json:"assessment"`
-	CommonName string      `json:"common_name"`
-	ID         int         `json:"id"`
-	Name       string      `json:"name"`
-	Registered bool        `json:"registered"`
-	Status     string      `json:"status"`
-	StitcherID interface{} `json:"stitcher_id"`
+	Assessment Assessment `json:"assessment"`
+	CommonName string     `json:"common_name"`
+	ID         int        `json:"id"`
+	Name       string     `json:"name"`
+	Registered bool       `json:"registered"`
+	Status     string     `json:"status"`
+	StitcherID int        `json:"stitcher_id"`
 }
 
 // Assessment is a struct used inside of the Publisher struct.
