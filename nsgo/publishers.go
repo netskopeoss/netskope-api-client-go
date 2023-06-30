@@ -16,6 +16,7 @@ type PublishersList struct {
 */
 
 //PublisherList struct is used to define a list of Netskope publishers returned from the GET method.
+/* This is the old struct
 type PublishersList struct {
 	Publishers []struct {
 		Assessment struct {
@@ -37,8 +38,42 @@ type PublishersList struct {
 		UpgradeRequest             bool        `json:"upgrade_request"`
 	} `json:"publishers"`
 }
+*/
 
-//Publiser is a struct used to define and individual Netskope Publisher.
+type PublishersList struct {
+	Publishers []struct {
+		Assessment struct {
+			EeeSupport bool   `json:"eee_support"`
+			HddFree    string `json:"hdd_free"`
+			HddTotal   string `json:"hdd_total"`
+			IPAddress  string `json:"ip_address"`
+			Latency    int    `json:"latency"`
+			Version    string `json:"version"`
+		} `json:"assessment"`
+		CommonName                         string   `json:"common_name"`
+		Lbrokerconnect                     bool     `json:"lbrokerconnect"`
+		PublisherID                        int      `json:"publisher_id"`
+		PublisherName                      string   `json:"publisher_name"`
+		PublisherUpgradeProfilesExternalID int      `json:"publisher_upgrade_profiles_external_id"`
+		Registered                         bool     `json:"registered"`
+		Status                             string   `json:"status"`
+		StitcherID                         int      `json:"stitcher_id"`
+		Tags                               []string `json:"tags"`
+		UpgradeFailedReason                struct {
+			Detail    string `json:"detail"`
+			ErrorCode int    `json:"error_code"`
+			Timestamp int    `json:"timestamp"`
+			Version   string `json:"version"`
+		} `json:"upgrade_failed_reason"`
+		UpgradeRequest bool `json:"upgrade_request"`
+		UpgradeStatus  struct {
+			StatusFailureCode int    `json:"status_failure_code"`
+			Upstat            string `json:"upstat"`
+		} `json:"upgrade_status,omitempty"`
+	} `json:"publishers"`
+}
+
+//Publisher is a struct used to define and individual Netskope Publisher.
 type Publisher struct {
 	Assessment Assessment  `json:"assessment"`
 	CommonName string      `json:"common_name"`
