@@ -9,37 +9,6 @@ import (
 	"net/url"
 )
 
-/*
-type PublishersList struct {
-	Publishers []Publisher `json:"publishers"`
-}
-*/
-
-//PublisherList struct is used to define a list of Netskope publishers returned from the GET method.
-/* This is the old struct
-type PublishersList struct {
-	Publishers []struct {
-		Assessment struct {
-			EeeSupport string `json:"eee_support"`
-			HddFree    string `json:"hdd_free"`
-			HddTotal   string `json:"hdd_total"`
-			IPAddress  string `json:"ip_address"`
-			Version    string `json:"version"`
-		} `json:"assessment"`
-		//Assessment                 interface{} `json:"assessment"`
-		CommonName                 string      `json:"common_name"`
-		PublisherID                int         `json:"publisher_id"`
-		PublisherName              string      `json:"publisher_name"`
-		PublisherUpgradeProfilesID interface{} `json:"publisher_upgrade_profiles_id"`
-		Registered                 bool        `json:"registered"`
-		Status                     string      `json:"status"`
-		StitcherID                 interface{} `json:"stitcher_id"`
-		UpgradeFailedReason        interface{} `json:"upgrade_failed_reason"`
-		UpgradeRequest             bool        `json:"upgrade_request"`
-	} `json:"publishers"`
-}
-*/
-
 type PublishersList struct {
 	Publishers []struct {
 		Assessment struct {
