@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jeff-clearcover/netskope-api-client-go/nsgo"
+	"github.com/netskopeoss/netskope-api-client-go/nsgo"
 )
 
 func main() {
