@@ -1,11 +1,11 @@
-//Package netskope is an API client developed in GO for use with the Netskope v2 APIs.
-//The client was developed for and is used by the (Netskope Terraform Provider) https://github.com/ns-sbrown/terraform-provider-netskope.
+// Package netskope is an API client developed in GO for use with the Netskope v2 APIs.
+// The client was developed for and is used by the (Netskope Terraform Provider) https://github.com/ns-sbrown/terraform-provider-netskope.
 //
-//Requirements
+// # Requirements
 //
-//-	(Go) https://golang.org/doc/install >= 1.17
+// -	(Go) https://golang.org/doc/install >= 1.18
 //
-//Usage
+// Usage
 //
 //	package main
 //
