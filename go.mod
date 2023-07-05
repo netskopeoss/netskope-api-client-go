@@ -1,4 +1,4 @@
-module github.com/jeff-clearcover/netskope-api-client-go
+module github.com/netskopeoss/netskope-api-client-go
 
 go 1.18
 
