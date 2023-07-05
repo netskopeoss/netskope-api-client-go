@@ -5,7 +5,7 @@ The client was developed for and is used by the [Netskope Terraform Provider](ht
 
 ## Requirements
 
--	[Go](https://golang.org/doc/install) >= 1.17
+-	[Go](https://golang.org/doc/install) >= 1.18
 
 Usage
 
