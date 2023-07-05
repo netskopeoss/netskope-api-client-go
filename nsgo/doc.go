@@ -13,7 +13,7 @@
 //		"fmt"
 //		"os"
 //
-//		"github.com/jeff-clearcover/netskope-api-client-go/netskope"
+//		"github.com/netskopeoss/netskope-api-client-go/netskope"
 //	)
 //
 //	func main() {
