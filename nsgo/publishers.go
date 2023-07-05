@@ -9,36 +9,40 @@ import (
 	"net/url"
 )
 
-/*
-type PublishersList struct {
-	Publishers []Publisher `json:"publishers"`
-}
-*/
-
-//PublisherList struct is used to define a list of Netskope publishers returned from the GET method.
 type PublishersList struct {
 	Publishers []struct {
 		Assessment struct {
-			EeeSupport string `json:"eee_support"`
+			EeeSupport bool   `json:"eee_support"`
 			HddFree    string `json:"hdd_free"`
 			HddTotal   string `json:"hdd_total"`
 			IPAddress  string `json:"ip_address"`
+			Latency    int    `json:"latency"`
 			Version    string `json:"version"`
 		} `json:"assessment"`
-		//Assessment                 interface{} `json:"assessment"`
-		CommonName                 string      `json:"common_name"`
-		PublisherID                int         `json:"publisher_id"`
-		PublisherName              string      `json:"publisher_name"`
-		PublisherUpgradeProfilesID interface{} `json:"publisher_upgrade_profiles_id"`
-		Registered                 bool        `json:"registered"`
-		Status                     string      `json:"status"`
-		StitcherID                 interface{} `json:"stitcher_id"`
-		UpgradeFailedReason        interface{} `json:"upgrade_failed_reason"`
-		UpgradeRequest             bool        `json:"upgrade_request"`
+		CommonName                         string   `json:"common_name"`
+		Lbrokerconnect                     bool     `json:"lbrokerconnect"`
+		PublisherID                        int      `json:"publisher_id"`
+		PublisherName                      string   `json:"publisher_name"`
+		PublisherUpgradeProfilesExternalID int      `json:"publisher_upgrade_profiles_external_id"`
+		Registered                         bool     `json:"registered"`
+		Status                             string   `json:"status"`
+		StitcherID                         int      `json:"stitcher_id"`
+		Tags                               []string `json:"tags"`
+		UpgradeFailedReason                struct {
+			Detail    string `json:"detail"`
+			ErrorCode int    `json:"error_code"`
+			Timestamp int    `json:"timestamp"`
+			Version   string `json:"version"`
+		} `json:"upgrade_failed_reason"`
+		UpgradeRequest bool `json:"upgrade_request"`
+		UpgradeStatus  struct {
+			StatusFailureCode int    `json:"status_failure_code"`
+			Upstat            string `json:"upstat"`
+		} `json:"upgrade_status,omitempty"`
 	} `json:"publishers"`
 }
 
-//Publiser is a struct used to define and individual Netskope Publisher.
+//Publisher is a struct used to define and individual Netskope Publisher.
 type Publisher struct {
 	Assessment Assessment  `json:"assessment"`
 	CommonName string      `json:"common_name"`
