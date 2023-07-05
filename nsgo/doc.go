@@ -3,7 +3,7 @@
 //
 // # Requirements
 //
-// -	(Go) https://golang.org/doc/install >= 1.17
+// -	(Go) https://golang.org/doc/install >= 1.18
 //
 // Usage
 //
