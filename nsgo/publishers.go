@@ -9,13 +9,9 @@ import (
 	"net/url"
 )
 
-/*
-type PublishersList struct {
-	Publishers []Publisher `json:"publishers"`
-}
-*/
 
 // PublisherList struct is used to define a list of Netskope publishers returned from the GET method.
+
 type PublishersList struct {
 	Publishers []struct {
 		Assessment struct {
@@ -49,7 +45,9 @@ type PublishersList struct {
 	} `json:"publishers"`
 }
 
+
 // Publiser is a struct used to define and individual Netskope Publisher.
+
 type Publisher struct {
 	Assessment Assessment `json:"assessment"`
 	CommonName string     `json:"common_name"`
