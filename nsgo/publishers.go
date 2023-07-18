@@ -9,17 +9,16 @@ import (
 	"net/url"
 )
 
-
 // PublisherList struct is used to define a list of Netskope publishers returned from the GET method.
 
 type PublishersList struct {
 	Publishers []struct {
 		Assessment struct {
-			EeeSupport bool   `json:"eee_support"`
+			EeeSupport string `json:"eee_support"`
 			HddFree    string `json:"hdd_free"`
 			HddTotal   string `json:"hdd_total"`
 			IPAddress  string `json:"ip_address"`
-			Latency    int    `json:"latency"`
+			Latency    string `json:"latency"`
 			Version    string `json:"version"`
 		} `json:"assessment"`
 		CommonName                         string   `json:"common_name"`
@@ -33,20 +32,19 @@ type PublishersList struct {
 		Tags                               []string `json:"tags"`
 		UpgradeFailedReason                struct {
 			Detail    string `json:"detail"`
-			ErrorCode int    `json:"error_code"`
-			Timestamp int    `json:"timestamp"`
+			ErrorCode string `json:"error_code"`
+			Timestamp string `json:"timestamp"`
 			Version   string `json:"version"`
 		} `json:"upgrade_failed_reason"`
 		UpgradeRequest bool `json:"upgrade_request"`
 		UpgradeStatus  struct {
-			StatusFailureCode int    `json:"status_failure_code"`
+			StatusFailureCode string `json:"status_failure_code"`
 			Upstat            string `json:"upstat"`
 		} `json:"upgrade_status,omitempty"`
 	} `json:"publishers"`
 }
 
-
-// Publiser is a struct used to define and individual Netskope Publisher.
+// Publisher is a struct used to define and individual Netskope Publisher.
 
 type Publisher struct {
 	Assessment Assessment `json:"assessment"`
