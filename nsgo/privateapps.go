@@ -30,13 +30,23 @@ type PrivateAppsList struct {
 			Transport string    `json:"transport"`
 			UpdatedAt time.Time `json:"updated_at"`
 		} `json:"protocols"`
-		Reachability                interface{} `json:"-"`
+		Reachability struct {
+			ErrorCode   int    `json:"-"`
+			ErrorString string `json:"-"`
+			Reachable   bool   `json:"reachable"`
+		} `json:"reachability"`
+		//Reachability                interface{} `json:"-"`
 		ServicePublisherAssignments []struct {
-			Primary      string      `json:"primary"`
-			PublisherID  int         `json:"publisher_id"`
-			Reachability interface{} `json:"reachability"`
-			ServiceID    int         `json:"service_id"`
-		} `json:"-"`
+			Primary     string `json:"primary"`
+			PublisherID int    `json:"publisher_id"`
+			//Reachability string `json:"reachability"`
+			Reachability struct {
+				ErrorCode   int    `json:"-"`
+				ErrorString string `json:"-"`
+				Reachable   bool   `json:"reachable"`
+			} `json:"reachability"`
+			ServiceID int `json:"service_id"`
+		} `json:"service_publisher_assignments"`
 		TrustSelfSignedCerts bool `json:"trust_self_signed_certs"`
 		UsePublisherDNS      bool `json:"use_publisher_dns"`
 	} `json:"private_apps"`
