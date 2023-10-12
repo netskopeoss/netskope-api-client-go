@@ -80,8 +80,13 @@ type Assessment struct {
 //		Id: "987",
 //	}
 type PublisherOptions struct {
-	Name string `json:"name,omitempty"`
-	Id   string `json:"id,omitempty"`
+	Name                       string `json:"name,omitempty"`
+	Id                         string `json:"id,omitempty"`
+	Lbrokerconnect             bool   `json:"lbrokerconnect,omitempty"`
+	PublisherUpgradeProfilesID int    `json:"publisher_upgrade_profiles_id,omitempty"`
+	Tags                       []struct {
+		TagName string `json:"tag_name"`
+	} `json:"tags,omitempty"`
 }
 
 // PublisherToken struct is used to define the token response data.
